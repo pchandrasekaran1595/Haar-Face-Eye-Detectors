@@ -17,7 +17,7 @@ def breaker(num: int=50, char: str="*") -> None:
     print("\n" + num*char + "\n")
 
 
-def read(path: str, video: bool=False) -> np.ndarray:
+def read_file(path: str, video: bool=False) -> np.ndarray:
     if video:
         return cv2.VideoCapture(path)
     else:
@@ -66,9 +66,11 @@ class Model(object):
     def __init__(self, mode="face"):
         self.mode = mode
 
-        if re.match(r"face", self.mode, re.IGNORECASE):
+        assert re.match(r"^face$", self.mode, re.IGNORECASE) or re.match(r"^eye$", self.mode, re.IGNORECASE), "Invalid mode"
+
+        if re.match(r"^face$", self.mode, re.IGNORECASE):
             self.model = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
-        elif re.match(r"eye", self.mode, re.IGNORECASE):
+        elif re.match(r"^eye$", self.mode, re.IGNORECASE):
             self.model_1 = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
             self.model_2 = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_eye.xml")
 
@@ -103,8 +105,7 @@ def app() -> None:
     args_3: tuple = ("--realtime", "-rt")
     args_4: tuple = ("--mode", "-m")
     args_5: tuple = ("--file", "-f")
-    args_6: tuple = ("--save", "-s")
-    args_7: str = "--downscale"
+    args_6: str = "--downscale"
 
     do_image: bool = False
     do_video: bool = False
@@ -112,7 +113,6 @@ def app() -> None:
     filename: str = None
     mode: str = None
     factor: float = None
-    save: bool = False
 
     if args_1[0] in sys.argv or args_1[1] in sys.argv: do_image = True
     if args_2[0] in sys.argv or args_2[1] in sys.argv: do_video = True
@@ -124,25 +124,23 @@ def app() -> None:
     if args_5[0] in sys.argv: filename = sys.argv[sys.argv.index(args_5[0]) + 1]
     if args_5[1] in sys.argv: filename = sys.argv[sys.argv.index(args_5[1]) + 1]
 
-    if args_6[0] in sys.argv or args_6[1] in sys.argv: save = True
-
-    if args_7 in sys.argv: factor = float(sys.argv[sys.argv.index(args_7) + 1])
+    if args_6 in sys.argv: factor = float(sys.argv[sys.argv.index(args_6) + 1])
 
     assert(isinstance(mode, str))
     model = Model(mode=mode)
 
     if do_image:
         assert(isinstance(filename, str))
-        image = read(os.path.join(READ_PATH, filename))
+        image = read_file(os.path.join(READ_PATH, filename))
     
         detections1, detections2 = model.detect(image)
         model.draw_detections(image, detections1, detections2)
 
-        if not save: show(BGR2RGB(image))
+        show(BGR2RGB(image))
     
     if do_video:
         assert(isinstance(filename, str))
-        cap = read(os.path.join(READ_PATH, filename), video=True)
+        cap = read_file(os.path.join(READ_PATH, filename), video=True)
         
         while cap.isOpened():
             ret, frame = cap.read()
