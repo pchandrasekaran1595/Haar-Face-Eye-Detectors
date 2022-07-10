@@ -1,20 +1,18 @@
-Face and Eye Detection using Haar Cascade Classifiers
+### **Face Detection using Haar Cascade Classifiers**<br>
 
-### **CLI Arguments:**
-<pre>
-1. --image, -i     : Flag that controls entry to perform detection on an image
-2. --video, -v     : Flag that controls entry to perform detection on a video file
-3. --realtime, -rt : Flag that controls entry to perform realtime detection
-4. --mode, -m      : Mode in which to operate (Face or Eye)
-5. --file, -f      : Name of the file (Used when --image or --video is set)
-6. --save, -s      : Save
-7. --downscale     : Used to downscale the video file (Useful for display purposes)
-</pre>
+<br>
 
-Needs --image, --video or --realtime
+1. Install Python
+2. Run `pip install virtualenv`
+3. Run `make-env.bat` or `make-env-3.9.bat`
+4. Input Path &nbsp;--> `input`
+5. Output Path --> `output`
+6. Draws the **face** box with a `green` border and **eye** box with `blue` border
 
-&nbsp;
+**Arguments**
 
-**Notes**:
-
-Add pyinstaller command to build a .exe
+1. `--mode | -m` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - *image* or *video* or *realtime*
+2. `--model | -mo` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - *face* or *eye* (Eye makes use of face first to extract ROI)
+3. `--filename | -f` &nbsp;&nbsp;&nbsp; - Name of the image file (with extension)
+4. `--downscale | -ds` - Downscale video by a factor before inference 
+5. `--save | -s` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Save the processed file (`NotImplemented`)
