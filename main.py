@@ -42,13 +42,13 @@ def show_image(image: np.ndarray, cmap: str="gnuplot2", title: str=None) -> None
     plt.show()
 
 
-def draw_detections(image: np.ndarray, detections1: tuple, detections2: tuple=None):
-    if detections2 is None:
-        for (x, y, w, h) in detections1:
+def draw_detections(image: np.ndarray, face_detections: tuple, eye_detections: tuple=None):
+    if eye_detections is None:
+        for (x, y, w, h) in face_detections:
             cv2.rectangle(img=image, pt1=(x, y), pt2=(x+w, y+h), color=(0, 255, 0), thickness=2)
     else:
-        for (x1, y1, w1, h1) in detections1:
-            for (x2, y2, w2, h2) in detections2:
+        for (x1, y1, w1, h1) in face_detections:
+            for (x2, y2, w2, h2) in eye_detections:
                 cv2.rectangle(img=image[y1:y1+h1, x1:x1+w1], pt1=(x2, y2), pt2=(x2+w2, y2+h2), color=(255, 0, 0), thickness=2)
             cv2.rectangle(img=image, pt1=(x1, y1), pt2=(x1+w1, y1+h1), color=(0, 255, 0), thickness=2)
 
