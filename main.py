@@ -16,7 +16,6 @@ CAM_WIDTH: int  = 640
 CAM_HEIGHT: int = 360 
 FPS: int = 30
 
-#####################################################################################################
 
 def breaker(num: int=50, char: str="*") -> None:
     print("\n" + num*char + "\n")
