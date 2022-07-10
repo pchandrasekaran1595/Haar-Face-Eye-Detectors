@@ -68,14 +68,14 @@ class Model(object):
     def detect(self, image):
         temp_image = gray(image.copy())
         if re.match(r"face", self.model_type, re.IGNORECASE):
-            detections = self.model.detectMultiScale(image=temp_image)
+            detections = self.model.detectMultiScale(image=temp_image, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.CASCADE_SCALE_IMAGE)
             return detections, None
         elif re.match(r"eye", self.model_type, re.IGNORECASE):
             eye_detections = None
-            face_detections = self.model_1.detectMultiScale(image=temp_image)
+            face_detections = self.model_1.detectMultiScale(image=temp_image, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.CASCADE_SCALE_IMAGE)
             for (x, y, w, h) in face_detections:
                 roi_image = gray(image[y:y+h, x:x+w].copy())
-                eye_detections = self.model_2.detectMultiScale(image=roi_image)
+                eye_detections = self.model_2.detectMultiScale(image=roi_image, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.CASCADE_SCALE_IMAGE)
             return face_detections, eye_detections
 
 
